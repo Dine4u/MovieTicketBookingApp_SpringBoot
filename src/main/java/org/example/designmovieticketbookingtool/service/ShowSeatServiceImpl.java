@@ -1,5 +1,7 @@
 package org.example.designmovieticketbookingtool.service;
 
+import org.example.designmovieticketbookingtool.models.SeatStatus;
+import org.example.designmovieticketbookingtool.models.Show;
 import org.example.designmovieticketbookingtool.models.ShowSeat;
 import org.example.designmovieticketbookingtool.repository.ShowSeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +27,19 @@ public class ShowSeatServiceImpl implements ShowSeatService{
         return showSeats;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)//instead of taking transaction at whole generate ticket method, taken only available check method. can we do it?
+    @Transactional(isolation = Isolation.SERIALIZABLE)//instead of taking transaction at whole generate ticket method, taken only available check method. can we do it? - Yes we can do this
     @Override
-    public List<ShowSeat> checkShowSeatsAvailableForGivenShow(int showid, List<Integer> showSeatIDs) {
-        List<ShowSeat> availableShowSeats = showSeatRepository.findShowSeatsByIdIsInAndShowIdAndSeatStatus_Available(showSeatIDs,showid);   //can we pass parameter in different order and method name can be different?
+    public List<ShowSeat> checkShowSeatsAvailableForGivenShow(Show show, List<Integer> showSeatIDs) {
 
-        //Above lines are correct but hardcoding available seats as below to make application work - Application worked
-        List<ShowSeat> availableShowSeatsHardCoded=List.of(new ShowSeat());
-        return availableShowSeats;
+        //Working application using @Query annotation and passing our own native SQL query,
+//        List<ShowSeat> allAvailableSeatsForGivenShow = showSeatRepository.getAllAvailableSeatsForGivenShow(showSeatIDs, show);
+
+        //Not Working application due to incorrect order in below method
+//        List<ShowSeat> allAvailableSeatsForGivenShow = showSeatRepository.findShowSeatsByIdIsInAndShowAndSeatStatus(show,showSeatIDs, SeatStatus.AVAILABLE);   //can we pass parameter in different order and method name can be different? --> No we cannot, not working
+
+        ////Working application with declared query
+        List<ShowSeat> allAvailableSeatsForGivenShow = showSeatRepository.findShowSeatsByIdIsInAndShowAndSeatStatus(showSeatIDs,show, SeatStatus.AVAILABLE);
+
+        return allAvailableSeatsForGivenShow;
     }
 }

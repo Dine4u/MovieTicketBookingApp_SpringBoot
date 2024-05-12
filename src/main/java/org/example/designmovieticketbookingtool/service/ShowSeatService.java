@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ShowSeatService {
     List<ShowSeat> getShowSeats(List<Integer> ShowSeatIds);
-    List<ShowSeat> checkShowSeatsAvailableForGivenShow(int showid, List<Integer> showSeatIDs);
+    List<ShowSeat> checkShowSeatsAvailableForGivenShow(Show show, List<Integer> showSeatIDs);
 }

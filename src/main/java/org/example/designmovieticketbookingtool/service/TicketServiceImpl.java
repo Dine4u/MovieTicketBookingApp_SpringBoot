@@ -41,7 +41,9 @@ public class TicketServiceImpl implements TicketService {
         }
 
         //Checking availablility of seats for show - below set needs to be transaction with Serilizable and For update
-        List<ShowSeat> availableShowSeats = showSeatService.checkShowSeatsAvailableForGivenShow(showid, showSeatIDs);
+//        List<ShowSeat> availableShowSeats = showSeatService.checkShowSeatsAvailableForGivenShow(showid, showSeatIDs);//not working, passed actual show object below
+
+        List<ShowSeat> availableShowSeats = showSeatService.checkShowSeatsAvailableForGivenShow(show, showSeatIDs);
 
         if(availableShowSeats.size()!=showSeatIDs.size()){
             throw new SeatsUnavailableException("All or Some given seats are not available for the mentioned show");

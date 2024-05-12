@@ -1,9 +1,6 @@
 package org.example.designmovieticketbookingtool.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data       //Generates Getters and Setters
@@ -13,6 +10,7 @@ public class ShowSeat extends BaseModel{
     private Show show;
     @ManyToOne
     private Seat seat;
+
     @Enumerated(value = EnumType.STRING)
     private SeatStatus seatStatus;
     @ManyToOne
